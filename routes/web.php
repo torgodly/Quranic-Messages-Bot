@@ -21,8 +21,8 @@ Route::get('/', function () {
     $Files = Storage::disk('r2')->files($FilesPath);
     $media = array(
         array(
-            'type' => 'photo',
-            'media' => 'https://quranicmesseges.abdo.ly/files/a00001.jpg',
+            'type' => 'audio',
+            'media' => 'https://quranicmesseges.abdo.ly/files/00001- A.mp3',
         )
 
     );
@@ -70,7 +70,7 @@ Route::get('/', function () {
 
 
 Route::get('/files/{filename}', function ($filename) {
-    $fileStream = Storage::disk('r2')->readStream('pages/'.$filename);
+    $fileStream = Storage::disk('r2')->readStream('audio/'.$filename);
 
     if ($fileStream) {
         return Response::stream(function () use ($fileStream) {
