@@ -14,14 +14,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-   $firstpage = 'https://quranicmesseges.abdo.ly/pages/00001.jpg';
-    Telegram::sendPhoto([
-        'chat_id' => '@testtorgidly',
-        'photo' => new \Telegram\Bot\FileUpload\InputFile($firstpage),
-    ]);
+
+    $firstpage = 'https://quranicmesseges.abdo.ly/pages/00001.jpg';
+//    Telegram::sendPhoto([
+//        'chat_id' => '@testtorgidly',
+//        'photo' => new \Telegram\Bot\FileUpload\InputFile($firstpage),
+//    ]);
+
+    Telegram::sendMediaGroup(
+        [
+            'chat_id' => '@testtorgidly',
+            'media' => [
+                [
+                    'type' => 'photo',
+                    'media' => 'https://quranicmesseges.abdo.ly/pages/00001.jpg',
+//                    'caption' => 'Hello World'
+                ], [
+                    'type' => 'photo',
+                    'media' => 'https://quranicmesseges.abdo.ly/pages/00002.jpg',
+//                    'caption' => 'Hello World'
+                ],
+
+            ]
+        ]
+    );
+
 });
 Route::get('/audio/{filename}', function ($filename) {
-    $fileStream = Storage::disk('r2')->readStream('audio/'.$filename);
+    $fileStream = Storage::disk('r2')->readStream('audio/' . $filename);
 
     if ($fileStream) {
         return Response::stream(function () use ($fileStream) {
@@ -37,7 +57,7 @@ Route::get('/audio/{filename}', function ($filename) {
 
 //pages
 Route::get('/pages/{filename}', function ($filename) {
-    $fileStream = Storage::disk('r2')->readStream('pages/'.$filename);
+    $fileStream = Storage::disk('r2')->readStream('pages/' . $filename);
 
     if ($fileStream) {
         return Response::stream(function () use ($fileStream) {
