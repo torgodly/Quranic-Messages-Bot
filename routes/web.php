@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-   $firstpage = 'https://quranicmesseges.abdo.ly/page/00001.jpg';
+   $firstpage = 'https://quranicmesseges.abdo.ly/pages/00001.jpg';
     Telegram::sendPhoto([
         'chat_id' => '@testtorgidly',
         'photo' => $firstpage,
