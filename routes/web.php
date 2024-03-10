@@ -29,11 +29,7 @@ Route::get('/', function () {
                     'type' => 'photo',
                     'media' => 'https://quranicmesseges.abdo.ly/pages/00001.jpg',
 //                    'caption' => 'Hello World'
-                ], [
-                    'type' => 'photo',
-                    'media' => 'https://quranicmesseges.abdo.ly/pages/00002.jpg',
-//                    'caption' => 'Hello World'
-                ],
+                ]
 
             ])
         ]
