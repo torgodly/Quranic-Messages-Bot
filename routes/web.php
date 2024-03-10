@@ -22,7 +22,7 @@ Route::get('/', function () {
     $media = array(
         array(
             'type' => 'photo',
-            'media' => Storage::disk('r2')->readStream($Files[0]),
+            'media' => 'https://quranicmesseges.abdo.ly/files/a00001.jpg',
         )
 
     );
