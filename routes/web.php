@@ -24,7 +24,7 @@ Route::get('/', function () {
     Telegram::sendMediaGroup(
         [
             'chat_id' => '@testtorgidly',
-            'media' => [
+            'media' => json_encode([
                 [
                     'type' => 'photo',
                     'media' => 'https://quranicmesseges.abdo.ly/pages/00001.jpg',
@@ -35,7 +35,7 @@ Route::get('/', function () {
 //                    'caption' => 'Hello World'
                 ],
 
-            ]
+            ])
         ]
     );
 
