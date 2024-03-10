@@ -23,7 +23,19 @@ Route::get('/', function () {
         array(
             'type' => 'audio',
             'media' => 'https://quranicmesseges.abdo.ly/files/00001- A.mp3',
-        )
+        ),
+        array(
+            'type' => 'audio',
+            'media' => 'https://quranicmesseges.abdo.ly/files/00002- B.mp3',
+        ),
+        array(
+            'type' => 'audio',
+            'media' => 'https://quranicmesseges.abdo.ly/files/00002- A.mp3',
+        ),
+        array(
+            'type' => 'audio',
+            'media' => 'https://quranicmesseges.abdo.ly/files/00002- B.mp3',
+        ),
 
     );
 ////    dd($media);
