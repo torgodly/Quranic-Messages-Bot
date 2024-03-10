@@ -86,7 +86,7 @@ Route::get('/files/{filename}', function ($filename) {
             }
             return Response::stream(function () use ($fileStream) {
                 fpassthru($fileStream);
-            }, 304, [
+            }, 200, [
                 'Content-Type' => Storage::disk('r2')->mimeType($filename),
                 'Content-Disposition' => 'inline; filename="' . $filename . '"',
                 'Last-Modified' => gmdate('D, d M Y H:i:s', $fileLastModified) . ' GMT',
