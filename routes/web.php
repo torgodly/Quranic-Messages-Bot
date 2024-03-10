@@ -17,7 +17,7 @@ Route::get('/', function () {
    $firstpage = 'https://quranicmesseges.abdo.ly/pages/00001.jpg';
     Telegram::sendPhoto([
         'chat_id' => '@testtorgidly',
-        'photo' => $firstpage,
+        'photo' => new \Telegram\Bot\FileUpload\InputFile($firstpage),
     ]);
 });
 Route::get('/audio/{filename}', function ($filename) {
