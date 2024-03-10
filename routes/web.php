@@ -1,9 +1,6 @@
 <?php
 
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,18 +19,15 @@ Route::get('/', function () {
 //    Storage::disk('r2')->put('example.txt', 'Hello World');
     $FilesPath = 'pages/';
     $Files = Storage::disk('r2')->files($FilesPath);
-    $url = 'http://quranicmesseges.test/files/a00001.jpg?test=1';
-//    $url = 'https://ebidhub.abdo.ly/storage/319/683.jpeg';
-
     $media = array(
         array(
             'type' => 'photo',
-//            'media' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxw9rSm0LKHQUQrpSgPrEyS5CxPwfpZo5VagNdFiXK7g&s',
-            'media' => $url,
+            'media' => Storage::disk('r2')->readStream($Files[0]),
         )
 
     );
-
+////    dd($media);
+////
     $response = Telegram::sendMediaGroup([
         'chat_id' => '@testtorgidly',
         'media' => json_encode($media),
@@ -76,29 +70,16 @@ Route::get('/', function () {
 
 
 Route::get('/files/{filename}', function ($filename) {
-    try {
-        $filePath = 'pages/' . $filename;
-        $fileStream = Storage::disk('r2')->readStream($filePath);
-        if ($fileStream) {
-            $fileLastModified = Storage::disk('r2')->lastModified($filePath);
-            if (strtotime(request()->header('If-Modified-Since')) >= $fileLastModified) {
-                return response(null, 304);
-            }
-            return Response::stream(function () use ($fileStream) {
-                fpassthru($fileStream);
-            }, 200, [
-                'Content-Type' => Storage::disk('r2')->mimeType($filename),
-                'Content-Disposition' => 'inline; filename="' . $filename . '"',
-                'Last-Modified' => gmdate('D, d M Y H:i:s', $fileLastModified) . ' GMT',
-            ]);
-        } else {
-            abort(404);
-        }
-    } catch (RequestException $e) {
-        // Handle Guzzle HTTP request exception
-        abort(500, 'Failed to retrieve the file.');
-    } catch (\Exception $e) {
-        // Handle other exceptions
-        abort(500, 'An unexpected error occurred.');
+    $fileStream = Storage::disk('r2')->readStream('pages/'.$filename);
+
+    if ($fileStream) {
+        return Response::stream(function () use ($fileStream) {
+            fpassthru($fileStream);
+        }, 200, [
+            'Content-Type' => Storage::disk('r2')->mimeType($filename),
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
+    } else {
+        abort(404);
     }
 });
