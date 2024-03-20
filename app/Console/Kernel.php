@@ -17,62 +17,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
 
-        // $schedule->command('inspire')->hourly();
-        //call function every 5 minutes
+//        // $schedule->command('inspire')->hourly();
+//        //call function every 5 minutes
         $schedule->call(function () {
 
-            $PageName = Str::PadLeft(SentImages::query()->count() + 1, 5, '0'); // 00001.jpg
+            SentImages::create(['name' => '00001', 'date' => now()]);
 
-            $tafsirs = array_filter(Storage::disk('r2')->allFiles('tafsir/'), function ($value) use ($PageName) {
-                return Str::startsWith($value, 'tafsir/' . $PageName);
-            });
-            $audios = array_filter(Storage::disk('r2')->allFiles('audio/'), function ($value) use ($PageName) {
-                return Str::startsWith($value, 'audio/' . $PageName);
-            });
-            $mediaTafsirs = array();
+            print "Hello World".SentImages::count();
 
-            foreach ($tafsirs as $tafsir) {
-                // Assuming each $tafsir contains an audio link
-                $mediaTafsirs[] = array(
-                    'type' => 'photo',
-                    'media' => 'http://quranicmesseges.abdo.ly/' . $tafsir . '?random=58',
-                    // You can include additional properties like caption and parse_mode if needed
-                );
-            }
-
-
-            Telegram::sendPhoto([
-                'chat_id' => '@testtorgidly',
-                'photo' => new \Telegram\Bot\FileUpload\InputFile(Storage::disk('r2')->readStream('pages/' . $PageName . '.jpg')),
-            ]);
-
-            if (!empty($mediaTafsirs)) {
-                Telegram::sendMediaGroup(
-                    [
-                        'chat_id' => '@testtorgidly',
-                        'media' => json_encode($mediaTafsirs)
-
-                    ]
-                );
-            }
-
-
-            foreach ($audios as $audio) {
-                Telegram::sendAudio(
-                    [
-                        'chat_id' => '@testtorgidly',
-                        'audio' => new \Telegram\Bot\FileUpload\InputFile(Storage::disk('r2')->readStream($audio)),
-                        'thumb' => new \Telegram\Bot\FileUpload\InputFile(public_path('cover/' . substr($audio, -5, 1) . '.JPEG')),
-
-                    ]
-                );
-            }
-
-            SentImages::create(['name' => $PageName, 'date' => now()]);
-            return 'done' . $PageName;
-
-
-        })->everyTwoMinutes();
+        })->everyMinute();
     }
 
     /**

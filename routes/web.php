@@ -1,9 +1,7 @@
 <?php
 
 use App\Models\Package;
-use App\Models\SentImages;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +14,9 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::get('/', function () {
 
+Route::get('/', function () {
+    return view('welcome');
 });
 Route::get('/audio/{filename}', function ($filename) {
     $fileStream = Storage::disk('r2')->readStream('audio/' . $filename);
