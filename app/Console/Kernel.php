@@ -16,16 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-
-//        // $schedule->command('inspire')->hourly();
-//        //call function every 5 minutes
-        $schedule->call(function () {
-
-            SentImages::create(['name' => '00001', 'date' => now()]);
-
-            print "Hello World".SentImages::count();
-
-        })->everyMinute();
+         $schedule->command('sent-messages')->everyMinute();
     }
 
     /**
